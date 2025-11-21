@@ -1,5 +1,5 @@
 /**
- * Classe con il main, che avvia l'app
+ * Classe con il main, che avvia l'appa
  * che rappresenta il flusso dei clienti di un ufficio postale
  * messi in attesa da un totem elettronico che assegna
  * un numero progressivo e stampa il ticket

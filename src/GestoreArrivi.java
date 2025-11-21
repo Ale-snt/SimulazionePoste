@@ -1,5 +1,5 @@
 /**
- * Classe che implementa il thread per il totem touch screen che aggiunge
+ * Classe che implementa il thread per il totem touch screen che aggiunge a
  * i clienti alla lista di attesa e genera il numero di attesa
  * rappresenta il produttore
  * @author frida

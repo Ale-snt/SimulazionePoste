@@ -1,5 +1,5 @@
 /**
- * Classe che implementa il thread Sportello,
+ * Classe che implementa il thread Sportello,a
  * che serve i clienti delle
  * poste che arrivano via via, ovvero è il thread
  * consumatore delle risorse condivise
