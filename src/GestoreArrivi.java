@@ -1,40 +1,25 @@
-/**
- * Classe che implementa il thread per il totem touch screen che aggiunge a
- * i clienti alla lista di attesa e genera il numero di attesa
- * rappresenta il produttore
- * @author frida
- * @version 1.0
- */
 public class GestoreArrivi implements Runnable {
 
-    /* variabili d'istanza sono;
-     * la risorsa condivisa listaClienti
-     * e la costante per il numero massimo di arrivi */
     private ListaClienti listaClienti;
-    private final int attesaArrivi = 3000;
-    /**
-     * constructor
-     * @param listaClienti
-     */
+    private final int attesaArrivi = 2000; // 2 sec tra un arrivo e l'altro
+
     public GestoreArrivi(ListaClienti listaClienti) {
         this.listaClienti = listaClienti;
     }
-    /**
-     * TODO: cosa fa?
-     * @see Runnable
-     */
+
     public void run() {
         try {
             while (!Thread.interrupted()) {
                 Thread.sleep(attesaArrivi);
                 Integer clienteArrivato = listaClienti.addCliente();
                 if (clienteArrivato == null) {
+                    System.out.println("Totem: limite massimo raggiunto.");
                     break;
                 }
                 System.out.println("Arrivo Cliente Numero \t " + clienteArrivato);
             }
         } catch (InterruptedException e) {
-            System.out.println("Thread interrotto durante lo sleep");
+            System.out.println("Totem interrotto");
         } finally {
             System.out.println("Posta Chiusa");
         }
