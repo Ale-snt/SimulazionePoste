@@ -1,57 +1,47 @@
 import java.util.ArrayList;
-/**
- * Classe che rappresenta la risorsa condivisa fra i due thread
- * da gestire con metodi "synchronized"
- * e con l'uso di wait() e notify()
- * @author frida
- * @version 1.0
- */
+
 public class ListaClienti {
+
     private ArrayList<Integer> listaNumeri;
     private int ultimoArrivo;
     private int ultimoServito;
-    private final int numeroMassimo = 2;
-    /**
-     * constructor
-     * settaggio delle variabili di istanza
-     */
+
+    private final int numeroMassimo = 10;  // limite totale
+    private final int maxInAttesa = 3;     // limite clienti in fila
+
     public ListaClienti() {
-        listaNumeri = new ArrayList<Integer>();
+        listaNumeri = new ArrayList<>();
         ultimoArrivo = 0;
         ultimoServito = 0;
     }
 
-    /*synchronized parola chiave che gestisce il meccanismo del lock ovvero
-    * 1) impedisce ad un altro thread l'esecuzione di tale
-    * metodo, se un precedente thread lo sta già eseguendo
-    * 2) senza di lui wait e notify non possono essere usati
-    * si genera l'eccezione : IllegalMonitorStateException,*/
-
-    /**
-     * TODO: cosa fa?
-     *
-     */
-    public synchronized Integer rimuoviCliente() throws
-            InterruptedException {
-        while (ultimoServito >= ultimoArrivo) {
-            System.out.println("non ci sono arrivi dopo l'ultimo servito");
+    // CONSUMATORE: Sportello
+    public synchronized Integer rimuoviCliente() throws InterruptedException {
+        while (listaNumeri.isEmpty()) {
+            System.out.println("Sportello: nessun cliente in attesa...");
             wait();
         }
+
         ultimoServito++;
+        listaNumeri.remove(0);
+        notifyAll(); // risveglia il totem se la coda era piena
         return ultimoServito;
     }
 
-    /**
-     * TODO: cosa fa?
-     *
-     */
-    public synchronized Integer addCliente() {
+    // PRODUTTORE: GestoreArrivi
+    public synchronized Integer addCliente() throws InterruptedException {
+        while (listaNumeri.size() >= maxInAttesa) {
+            System.out.println("Totem: troppi clienti in attesa, attendo...");
+            wait();
+        }
+
         if (ultimoArrivo < numeroMassimo) {
             ultimoArrivo++;
             listaNumeri.add(ultimoArrivo);
-            notify();
+            notifyAll(); // risveglia gli sportelli
             return ultimoArrivo;
         }
-        return null;
+
+        return null; // ufficio saturato
     }
 }
